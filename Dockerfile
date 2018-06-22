@@ -69,5 +69,6 @@ RUN set -ex \
   && apt-get install -y \
   python-setuptools \
   python-dev \
+  zip \
   && easy_install pip \
   && pip install awscli
