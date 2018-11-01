@@ -1,6 +1,5 @@
-FROM maven:3.5-jdk-8
-# configure maven
-ADD https://s3.amazonaws.com/public-file-storage/public-maven-settings.xml /usr/share/maven/ref/settings.xml
+# Use Hash to avoid JDK bug introduced to tag and reported here: https://github.com/carlossg/docker-maven/issues/92
+FROM maven@sha256:b37da91062d450f3c11c619187f0207bbb497fc89d265a46bbc6dc5f17c02a2b
 
 # install node + yarn
 # copied from https://github.com/nodejs/docker-node/blob/master/6.11/stretch/Dockerfile
