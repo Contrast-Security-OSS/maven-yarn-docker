@@ -8,6 +8,7 @@ RUN set -ex \
   python-pip \
   zip \
   gpg \
+  git \
   && pip install awscli
 
 # install node + yarn
