@@ -11,9 +11,9 @@ RUN set -ex \
   git 
 
 #install aws 2
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-sudo ./aws/install
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+  unzip awscliv2.zip \
+  sudo ./aws/install
 
 # install node + yarn
 # copied from https://github.com/nodejs/docker-node/blob/master/6.11/stretch/Dockerfile
