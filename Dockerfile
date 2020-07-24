@@ -1,5 +1,18 @@
-# Use Hash to avoid JDK bug introduced to tag and reported here: https://github.com/carlossg/docker-maven/issues/92
-FROM adoptopenjdk/maven-openjdk8@sha256:f80c6d72cacf2f6d399f74aa13ad1159b98f8e37b25a0d2d4670b7a57ec2181b
+FROM adoptopenjdk/openjdk8:jdk8u262-b10
+
+ARG MAVEN_VERSION="3.6.3"
+ARG NODE_VERSION="10.16.3"
+ARG YARN_VERSION="1.17.3"
+ARG DOCKER_MACHINE_VERSION="0.16.0"
+
+RUN mkdir -p /usr/share/maven \
+    && curl -Lso  /tmp/maven.tar.gz https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
+    && tar -xzC /usr/share/maven --strip-components=1 -f /tmp/maven.tar.gz \
+    && rm -v /tmp/maven.tar.gz \
+    && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+
+ENV MAVEN_HOME /usr/share/maven
+ENV MAVEN_CONFIG "/root/.m2"
 
 # install aws-cli
 RUN set -ex \
@@ -21,7 +34,6 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 RUN groupadd --gid 1000 node \
   && useradd --uid 1000 --gid node --shell /bin/bash --create-home node
 
-ENV NODE_VERSION 10.16.3
 
 RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && case "${dpkgArch##*-}" in \
@@ -60,7 +72,6 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && rm "node-v$NODE_VERSION-linux-$ARCH.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
-ENV YARN_VERSION 1.17.3
 
 RUN set -ex \
   && for key in \
@@ -78,3 +89,6 @@ RUN set -ex \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
+
+RUN curl -L https://github.com/docker/machine/releases/download/v$DOCKER_MACHINE_VERSION/docker-machine-$(uname -s)-$(uname -m) > /usr/local/bin/docker-machine && \
+  chmod +x /usr/local/bin/docker-machine
