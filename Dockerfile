@@ -21,7 +21,8 @@ RUN set -ex \
   python-pip \
   zip \
   gpg \
-  git 
+  git \
+  jq
 
 #install aws 2
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
