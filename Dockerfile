@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk8:jdk8u262-b10
+FROM adoptopenjdk/openjdk8:jdk8u262-b10@sha256:cbd4e3aa5f8af08c134b26e7160b7cb64ad5d92be200844ce368c5f44ca58d05
 
 ARG MAVEN_VERSION="3.6.3"
 ARG NODE_VERSION="10.22.1"
